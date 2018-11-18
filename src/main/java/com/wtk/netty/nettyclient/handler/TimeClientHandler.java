@@ -1,15 +1,19 @@
 package com.wtk.netty.nettyclient.handler;
 
 import com.wtk.netty.nettycoder.Job;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * @program: netty
@@ -23,6 +27,9 @@ public class TimeClientHandler extends SimpleChannelInboundHandler<Job> {
     private static final int TRY_TIMES = 3;
 
     private int currentTime = 0;
+
+    private static final ByteBuf HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(new Random().nextInt(10) + "客户端心跳信息", CharsetUtil.UTF_8));
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Job msg) throws Exception {
 //        ctx.writeAndFlush(unixTime);
@@ -65,7 +72,7 @@ public class TimeClientHandler extends SimpleChannelInboundHandler<Job> {
                 if(currentTime <= TRY_TIMES){
                     System.out.println("currentTime:"+currentTime);
                     currentTime++;
-                    ctx.writeAndFlush(evt);
+                    ctx.writeAndFlush(HEARTBEAT_SEQUENCE.duplicate());
                 }
             }
         }

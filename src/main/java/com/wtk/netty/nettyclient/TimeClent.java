@@ -13,6 +13,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,7 +42,7 @@ public class TimeClent {
 //                    .addLast(new StringEncoder())
 //                    .addLast("decoder",new TimeDecoder())
 //                    .addLast("encoder",new TimeEncoder())
-                    .addLast(new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS))
+//                    .addLast(new IdleStateHandler(5, 5, 0, TimeUnit.SECONDS))
                     .addLast(new JobDecoder())
                     .addLast(new JobEncoder())
                     .addLast(new TimeClientHandler());
@@ -49,9 +51,16 @@ public class TimeClent {
 
             // Start the client.
             ChannelFuture f = b.connect(host, port).sync(); // (5)
-
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+            for (;;) {
+                String line = in.readLine();
+                if (null == line) {
+                    continue;
+                }
+                f.channel().writeAndFlush(line + "\r\n");
+            }
             // Wait until the connection is closed.
-            f.channel().closeFuture().sync();
+//            f.channel().closeFuture().sync();
 //            System.out.println("try finish");
         } finally {
             workerGroup.shutdownGracefully();

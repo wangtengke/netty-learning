@@ -55,6 +55,7 @@ public class DiscardServerHandler extends SimpleChannelInboundHandler<Job> {
     }
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        log.info("idle event triggered!");
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {
