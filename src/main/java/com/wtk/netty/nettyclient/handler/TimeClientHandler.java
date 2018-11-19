@@ -54,14 +54,14 @@ public class TimeClientHandler extends SimpleChannelInboundHandler<Job> {
             public void operationComplete(ChannelFuture future) throws Exception {
                 assert f == future;
                 System.out.println("finish1");
-                ctx.close();
+//                ctx.close();
             }
         }); // (4)
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println("bye i am client channelInactive");
+        System.out.println("client channelInactive");
     }
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -72,7 +72,7 @@ public class TimeClientHandler extends SimpleChannelInboundHandler<Job> {
                 if(currentTime <= TRY_TIMES){
                     System.out.println("currentTime:"+currentTime);
                     currentTime++;
-                    ctx.writeAndFlush(HEARTBEAT_SEQUENCE.duplicate());
+                    ctx.writeAndFlush(new Job());
                 }
             }
         }

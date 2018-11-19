@@ -51,7 +51,7 @@ public class DiscardServerHandler extends SimpleChannelInboundHandler<Job> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-//        System.out.println("bye i am server channelInactive");
+        System.out.println("server channelInactive");
     }
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {

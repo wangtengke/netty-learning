@@ -4,6 +4,7 @@ package com.wtk.netty.nettyserver;
 import com.wtk.netty.nettyserver.handler.DiscardServerHandler;
 import com.wtk.netty.nettycoder.JobDecoder;
 import com.wtk.netty.nettycoder.JobEncoder;
+import com.wtk.netty.nettyserver.handler.IdleServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -39,7 +40,8 @@ public class DiscardServer {
                             ch.pipeline()
 //                            .addLast(new StringDecoder())
 //                            .addLast(new StringEncoder())
-                            .addLast(new IdleStateHandler(4, 4, 4, TimeUnit.SECONDS))
+                            .addLast(new IdleStateHandler(4, 0, 0, TimeUnit.SECONDS))
+//                            .addLast(new IdleServerHandler())
                             .addLast(new JobDecoder())
                             .addLast(new JobEncoder())
                             .addLast(new DiscardServerHandler());
