@@ -1,0 +1,23 @@
+{
+  "groups": [
+    {
+      "name": "netty",
+      "type": "com.wtk.nettyconfig.nettyconfig.NettyConfig",
+      "sourceType": "com.wtk.nettyconfig.nettyconfig.NettyConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "netty.address",
+      "type": "java.lang.String",
+      "sourceType": "com.wtk.nettyconfig.nettyconfig.NettyConfig"
+    },
+    {
+      "name": "netty.port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.wtk.nettyconfig.nettyconfig.NettyConfig",
+      "defaultValue": 0
+    }
+  ],
+  "hints": []
+}
