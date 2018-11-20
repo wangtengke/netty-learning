@@ -37,16 +37,12 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Job> {
 //        ctx.writeAndFlush(unixTime);
 //        ByteBuf in = (ByteBuf) msg;
 //        System.out.println("i am "+msg);
-        log.info("i am {{}}", msg.toString());
-        ctx.close();
+        log.info("server read {{}}", msg.toString());
     }
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
-//        System.out.println("hello i am client  channelActive");
-//        ChannelFuture f = ctx.writeAndFlush("yes");
-//        f.addListener(ChannelFutureListener.CLOSE);
-//        ctx.close();
+        log.info("channelActive success!");
         Job job = new Job();
         job.setJobid(1);
         job.setJobtype("move");
@@ -55,7 +51,8 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Job> {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 assert f == future;
-                System.out.println("finish1");
+                log.info("channelActive finish");
+//                System.out.println("channelActive finish");
 //                ctx.close();
             }
         }); // (4)
@@ -63,17 +60,19 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Job> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("client channelInactive");
+        log.info("channelInactive!");
     }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        System.out.println("循环触发时间：" + new Date());
+        log.info("循环触发时间：{}",new Date());
+//        System.out.println("循环触发时间：" + new Date());
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.WRITER_IDLE) {
                 if (currentTime <= TRY_TIMES) {
-                    System.out.println("currentTime:" + currentTime);
+                    log.info("currentTime:{}",currentTime);
+//                    System.out.println("currentTime:" + currentTime);
                     currentTime++;
                     ctx.writeAndFlush(new Job());
                 }
@@ -84,11 +83,12 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Job> {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         super.channelReadComplete(ctx);
-        System.out.println("complete");
+        log.info("client read complete");
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        log.error("client ERROR!");
         cause.printStackTrace();
         ctx.close();
     }

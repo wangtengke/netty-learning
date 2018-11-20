@@ -31,42 +31,6 @@ public class NettyClient {
     @Autowired
     private NettyConfig nettyConfig;
 
-    public static void main(String[] args) throws Exception {
-        String host = args[0];
-        int port = Integer.parseInt(args[1]);
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-
-//        try {
-//            Bootstrap b = new Bootstrap(); // (1)
-//            b.group(workerGroup) // (2)
-//             .channel(NioSocketChannel.class) // (3)
-//             .option(ChannelOption.SO_KEEPALIVE, true) // (4)
-//             .handler(new ChannelInitializer<SocketChannel>() {
-//                @Override
-//                public void initChannel(SocketChannel ch) throws Exception {
-//                    ch.pipeline()
-////                    .addLast(new StringDecoder())
-////                    .addLast(new StringEncoder())
-////                    .addLast("decoder",new TimeDecoder())
-////                    .addLast("encoder",new TimeEncoder())
-//                    .addLast(new IdleStateHandler(0, 3, 0, TimeUnit.SECONDS))
-//                    .addLast(new JobDecoder())
-//                    .addLast(new JobEncoder())
-//                    .addLast(new TimeClientHandler());
-//                }
-//            });
-//
-//            // Start the client.
-//            ChannelFuture f = b.connect(host, port).sync(); // (5)
-//            // Wait until the connection is closed.
-//            f.channel().closeFuture().sync();
-////            System.out.println("try finish");
-//        } finally {
-//            workerGroup.shutdownGracefully();
-//
-//        }
-    }
-
     public void start() {
         int port = nettyConfig.getPort();
         String address = nettyConfig.getAddress();
